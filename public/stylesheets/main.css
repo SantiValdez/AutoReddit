@@ -1,0 +1,19 @@
+h1, h2{
+    color: red;
+    text-align: center;
+}
+form{
+    margin: 0 35% 0 35%; 
+}
+
+button{
+    border: none;
+}
+
+#signup > div > label{
+    font-size: 2em; 
+}
+
+#trackedSubs{
+    float: left;
+}

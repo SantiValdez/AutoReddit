@@ -1,0 +1,16 @@
+<% include partials/header %>
+
+<form id="login" action="/login" method="POST">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" name="username" placeholder="Eg. SendNudes420">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" placeholder="password">
+    </div>
+    <div class="form-group">
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<% include partials/footer %>

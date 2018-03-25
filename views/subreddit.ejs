@@ -1,0 +1,18 @@
+<% include partials/header %>
+
+<h1><%= subredditName %> details</h1>
+
+<div>
+    <h2>Posts</h2>
+</div>
+
+<div>
+    <h2>Tags</h2>
+</div>
+
+<form action="/:subredditName?_method=DELETE" method="POST">
+    <input type="hidden" name="subredditName" value="<%= subredditName %>">
+    <input type="submit" class="btn btn-danger" value="Delete this sub">
+</form>
+
+<% include partials/footer %>
