@@ -1,0 +1,18 @@
+<% include partials/header %>
+
+<h1>Tags for /r/<%= subreddit.name %></h1>
+
+<div>
+    <% subreddit.tags.forEach(function(tag){ %>
+        <p><%= tag %></p>
+    <% }); %>
+</div>
+
+<div>
+    <form action="/tags" method="POST">
+        <input type="text" name="tagName" placeholder="e.g. 'creepy'">
+        <button type="submit">Add tag</button>
+    </form>
+</div>
+
+<% include partials/footer %>

@@ -43,7 +43,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(indexRoutes);
-app.use(userRoutes);
+app.use("/userControlPanel", userRoutes);
 
 const server = app.listen(27017, ()=> {
     console.log("----------SERVER UP----------");
