@@ -7,11 +7,11 @@
 </div>
 
 <div>
-    <a href="/userControlPanel/<%= subreddit.name %>/tags">Tags</a>
+    <a href="/userControlPanel/<%= subreddit._id %>/tags">Tags</a>
 </div>
 
-<form action="/userControlPanel/:subredditName?_method=DELETE" method="POST">
-    <input type="hidden" name="subredditName" value="<%= subreddit.name %>">
+<form action="/userControlPanel/:subreddit._id?_method=DELETE" method="POST">
+    <input type="hidden" name="subreddit" value="<%= subreddit._id %>">
     <input type="submit" class="btn btn-danger" value="Delete this sub">
 </form>
 

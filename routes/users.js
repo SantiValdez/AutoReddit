@@ -42,8 +42,9 @@ router.post("/", middleware.isLoggedIn, (req, res)=>{
 });
 
 router.get("/:subreddit", middleware.isLoggedIn, (req, res) =>{
-    let subredditName = req.params.subreddit;
-    Subreddit.findOne({name:subredditName}, (err, foundSub) =>{
+    let subredditID = req.params.subreddit;
+
+    Subreddit.findById(subredditID, (err, foundSub)=>{
         if(err){
             console.log(err);
         } else {
@@ -53,22 +54,65 @@ router.get("/:subreddit", middleware.isLoggedIn, (req, res) =>{
 });
 
 router.delete("/:subreddit", middleware.isLoggedIn, (req,res) =>{
-    let subredditName = req.body.subredditName;
-    Subreddit.findOneAndRemove({name: subredditName}, (err) =>{
+    let subToRemove = req.body.subreddit;
+
+    Subreddit.findByIdAndRemove(subToRemove, (err)=>{
         if(err){
             console.log(err);
         } else {
             res.redirect("/userControlPanel");
         }
-    });
+    })
 });
 
 router.get("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
-    let subreddit = Subreddit.findOne({name: req.params.subreddit}, (err, foundSub) =>{
+    let subredditID = req.params.subreddit;
+
+    Subreddit.findById(subredditID, (err, foundSub) =>{
         if(err){
             console.log(err);
         } else {
             res.render("tags.ejs", {subreddit:foundSub});
+        }
+    });
+
+});
+
+router.post("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
+    let newTag = req.body.tagName;
+
+    User.findOne({username:req.user.username}).populate("subreddits").exec((err, foundUser)=>{
+        foundUser.subreddits.forEach((sub)=>{
+            if(sub.name === req.params.subreddit){
+                sub.tags.push(newTag);
+                sub.save((err, savedSub) =>{
+                    if(err){
+                        console.log(err);
+                    } else {
+                        res.redirect("back");
+                    }
+                });
+            }
+        })
+    });
+});
+
+router.put("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
+    let subredditID = req.params.subreddit;
+    let tagToDelete = req.body.tag;
+
+    Subreddit.findById(subredditID, (err, foundSub)=>{
+        if(err){
+            console.log(err);
+        } else {
+            foundSub.tags.pull(tagToDelete);
+            foundSub.save((err) =>{
+                if(err){
+                    console.log(err);
+                } else {
+                    res.redirect("back");
+                }
+            });
         }
     });
 });

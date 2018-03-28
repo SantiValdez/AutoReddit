@@ -6,13 +6,7 @@
     <h4>Your Subreddits</h4>
     <% user.subreddits.forEach(function(subreddit){ %>
         <div>
-            <!--<form action="/userControlPanel/<%= subreddit.name %>" method="GET">
-                <input type="hidden" name="subredditName" value="<%= subreddit.name %>">
-                <button type="submit">
-                    /r/<%= subreddit.name %>
-                </button>
-            </form> -->
-            <a href="/userControlPanel/<%= subreddit.name %>">/r/<%= subreddit.name %></a>
+            <a href="/userControlPanel/<%= subreddit._id %>">/r/<%= subreddit.name %></a>
         </div>
     <% }) %>     
 </div>
