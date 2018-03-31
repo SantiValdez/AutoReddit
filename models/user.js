@@ -10,12 +10,7 @@ const userSchema = new mongoose.Schema({
             ref: "Subreddit"
         }
     ],
-    posts: [
-        {
-            title: String,
-            url: String
-        }
-    ]
+    posts: [{}]
 });
 
 userSchema.plugin(passportLocalMongoose);

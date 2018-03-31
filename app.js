@@ -47,11 +47,9 @@ app.use(indexRoutes);
 app.use("/userControlPanel", userRoutes);
 
 
-Bot.search();
-
 setInterval(()=>{
-    Bot.log();
-}, 1000);
+    Bot.search();
+}, 10000);
 
 
 

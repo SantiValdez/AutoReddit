@@ -12,6 +12,17 @@ const r = new Snoowrap({
     password: process.env.REDDIT_PASS
 });
 
+function isValid(user, post, tag){
+    let postTitle = post.title.toLowerCase();
+    let postURL = "https://www.reddit.com" + post.permalink.toString();
+    let posts = user.posts;
+    let currentTag = tag;
+
+    if(postTitle.indexOf(currentTag) >= 0  && posts.findIndex(post => post.url === postURL) < 0){
+        return false;
+    }
+    return true;
+}
 
 let bot = {
 
@@ -32,10 +43,24 @@ let bot = {
                         //get and loop through sub's frontpage
                         r.getSubreddit(sub.name).getHot().then((posts) => {
                             posts.forEach((post) =>{
-                                //look at 'tags' for current sub, save urls that match with parent sub
+                                //look at 'tags' for current sub, save urls (permalink, url is the direct submission url) that match with parent sub
                                 sub.tags.forEach((tag) =>{
-                                    if(post.title.toLowerCase().indexOf(tag.toLowerCase()) >= 0){
-                                        bot.results.urls.push(post.url.toString());
+                                    if(!isValid(user, post, tag)){
+                                        bot.results.urls.push(post.permalink.toString());
+                                        let newPost = {
+                                            title: post.title,
+                                            url: "https://www.reddit.com" + post.permalink.toString()
+                                        };
+                                        user.posts.push(newPost);
+                                        user.save((err, savedUser) =>{
+                                            if(err){
+                                                console.log(err);
+                                            } else {
+                                                console.log("Saved post to user posts array \n " + savedUser);
+                                            }
+                                        });
+                                    } else {
+                                        console.log(isValid(user, post, tag));
                                     }
                                 });
                             });
