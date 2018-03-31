@@ -48,7 +48,7 @@ router.get("/:subreddit", middleware.isLoggedIn, (req, res) =>{
         if(err){
             console.log(err);
         } else {
-            res.render("subreddit.ejs", {subreddit:foundSub});
+            res.render("subreddit.ejs", {subreddit:foundSub, user:req.user});
         }
     });
 });
