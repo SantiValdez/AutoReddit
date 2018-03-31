@@ -5,7 +5,7 @@
 <div>
     <% subreddit.tags.forEach(function(tag){ %>
         <p><%= tag %></p>
-        <form action="/userControlPanel/<%= subreddit.name %>/tags?_method=PUT" method="POST">
+        <form action="/userControlPanel/<%= subreddit._id %>/tags?_method=PUT" method="POST">
             <input type="hidden" name="tag" value="<%= tag %>">
             <input type="hidden" name="subreddit" value="<%= subreddit._id %>">
             <button type="submit">delete tag</button>
@@ -14,7 +14,7 @@
 </div>
 
 <div>
-    <form action="/userControlPanel/<%= subreddit.name %>/tags" method="POST">
+    <form action="/userControlPanel/<%= subreddit._id %>/tags" method="POST">
         <input type="text" name="tagName" placeholder="e.g. 'creepy'">
         <button type="submit">Add tag</button>
     </form>

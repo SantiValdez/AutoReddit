@@ -9,7 +9,8 @@ const express         = require("express"),
       LocalStrategy   = require("passport-local"),
       methodOverride  = require("method-override"),
       userRoutes      = require("./routes/users"),
-      indexRoutes     = require("./routes/index")
+      indexRoutes     = require("./routes/index"),
+      Bot             = require("./bot");
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/auto_reddit").then( ()=> {
@@ -44,6 +45,15 @@ app.use(function (req, res, next) {
 
 app.use(indexRoutes);
 app.use("/userControlPanel", userRoutes);
+
+
+Bot.search();
+
+setInterval(()=>{
+    Bot.log();
+}, 1000);
+
+
 
 const server = app.listen(27017, ()=> {
     console.log("----------SERVER UP----------");

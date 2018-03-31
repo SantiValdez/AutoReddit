@@ -80,20 +80,25 @@ router.get("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
 
 router.post("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
     let newTag = req.body.tagName;
-
-    User.findOne({username:req.user.username}).populate("subreddits").exec((err, foundUser)=>{
-        foundUser.subreddits.forEach((sub)=>{
-            if(sub.name === req.params.subreddit){
-                sub.tags.push(newTag);
-                sub.save((err, savedSub) =>{
-                    if(err){
-                        console.log(err);
-                    } else {
-                        res.redirect("back");
-                    }
-                });
-            }
-        })
+    let id = req.user._id;
+    
+    User.findById(id).populate("subreddits").exec((err, foundUser)=>{
+        if(err){
+            console.log(err);
+        } else {
+            foundUser.subreddits.forEach((sub)=>{
+                if(sub._id.toString() === req.params.subreddit){
+                    sub.tags.push(newTag);
+                    sub.save((err, savedSub) =>{
+                        if(err){
+                            console.log(err);
+                        } else {
+                            res.redirect("back");
+                        }
+                    });
+                }
+            });
+        }
     });
 });
 
@@ -106,7 +111,7 @@ router.put("/:subreddit/tags", middleware.isLoggedIn, (req, res) =>{
             console.log(err);
         } else {
             foundSub.tags.pull(tagToDelete);
-            foundSub.save((err) =>{
+            foundSub.save((err, savedSub) =>{
                 if(err){
                     console.log(err);
                 } else {
