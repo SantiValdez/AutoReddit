@@ -12,6 +12,8 @@ const r = new Snoowrap({
     password: process.env.REDDIT_PASS
 });
 
+r.config({requestDelay: 500, warnings: false, continueAfterRatelimitError: true});
+
 function isValid(sub, post, tag){
     let postTitle = post.title.toLowerCase();
     let postURL = "https://www.reddit.com" + post.permalink.toString();
@@ -26,10 +28,7 @@ function isValid(sub, post, tag){
 
 let bot = {
 
-    saveExecuted: false,
-
     search: () =>{
-        saveExecuted = false;
         //loop through all users
         User.find({}).populate("subreddits").exec((err, foundUsers) =>{
             if(err){
@@ -51,16 +50,13 @@ let bot = {
                                             url: "https://www.reddit.com" + post.permalink.toString()
                                         };
                                         sub.posts.push(newPost);
-                                        if(!saveExecuted){
-                                            sub.save((err, savedSub) =>{
-                                                if(err){
-                                                    console.log(err);
-                                                } else {
-                                                    console.log(savedSub.posts.length);
-                                                }
-                                            });
-                                            saveExecuted = true;
-                                        }
+                                        sub.save((err, savedSub) =>{
+                                            if(err){
+                                                console.log(err);
+                                            } else {
+                                                console.log(savedSub.posts.length);
+                                            }
+                                        });
                                     } else {
                                         console.log(isValid(sub, post, tag));
                                     }
@@ -84,14 +80,6 @@ let bot = {
             name: "thick",
             tags: ["sabrina"]
         }
-        let pics = {
-            name: "pics",
-            tags: ["plaza"]
-        }
-        let cats = {
-            name: "cats",
-            tags: ["hours"]
-        }
 
         for (let i = 0; i < 1000; i++) {
             User.register({username:username + i.toString()}, password, (err, createdUser) => {
@@ -99,34 +87,6 @@ let bot = {
                     console.log(err);
                 } else {
                     Subreddit.create(thick, (err, createdSub) =>{
-                        if(err){
-                            console.log(err);
-                        } else {
-                            createdUser.subreddits.push(createdSub);
-                            createdUser.save((err, savedUser) =>{
-                                if(err){
-                                    console.log(err);
-                                } else {
-                                }
-                            });
-                        }
-                    });
-
-                    Subreddit.create(pics, (err, createdSub) =>{
-                        if(err){
-                            console.log(err);
-                        } else {
-                            createdUser.subreddits.push(createdSub);
-                            createdUser.save((err, savedUser) =>{
-                                if(err){
-                                    console.log(err);
-                                } else {
-                                }
-                            });
-                        }
-                    });
-
-                    Subreddit.create(cats, (err, createdSub) =>{
                         if(err){
                             console.log(err);
                         } else {
