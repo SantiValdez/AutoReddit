@@ -12,25 +12,24 @@ const r = new Snoowrap({
     password: process.env.REDDIT_PASS
 });
 
-function isValid(user, post, tag){
+function isValid(sub, post, tag){
     let postTitle = post.title.toLowerCase();
     let postURL = "https://www.reddit.com" + post.permalink.toString();
-    let posts = user.posts;
+    let posts = sub.posts;
     let currentTag = tag;
 
     if(postTitle.indexOf(currentTag) >= 0  && posts.findIndex(post => post.url === postURL) < 0){
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 let bot = {
 
-    results: {
-        urls: []
-    },
+    saveExecuted: false,
 
     search: () =>{
+        saveExecuted = false;
         //loop through all users
         User.find({}).populate("subreddits").exec((err, foundUsers) =>{
             if(err){
@@ -45,22 +44,25 @@ let bot = {
                             posts.forEach((post) =>{
                                 //look at 'tags' for current sub, save urls (permalink, url is the direct submission url) that match with parent sub
                                 sub.tags.forEach((tag) =>{
-                                    if(!isValid(user, post, tag)){
-                                        bot.results.urls.push(post.permalink.toString());
+                                    if(isValid(sub, post, tag)){
+                                        console.log("problem here????");
                                         let newPost = {
                                             title: post.title,
                                             url: "https://www.reddit.com" + post.permalink.toString()
                                         };
-                                        user.posts.push(newPost);
-                                        user.save((err, savedUser) =>{
-                                            if(err){
-                                                console.log(err);
-                                            } else {
-                                                console.log("Saved post to user posts array \n " + savedUser);
-                                            }
-                                        });
+                                        sub.posts.push(newPost);
+                                        if(!saveExecuted){
+                                            sub.save((err, savedSub) =>{
+                                                if(err){
+                                                    console.log(err);
+                                                } else {
+                                                    console.log(savedSub.posts.length);
+                                                }
+                                            });
+                                            saveExecuted = true;
+                                        }
                                     } else {
-                                        console.log(isValid(user, post, tag));
+                                        console.log(isValid(sub, post, tag));
                                     }
                                 });
                             });
@@ -74,12 +76,73 @@ let bot = {
         });     
     },
 
-    log: () =>{
-        bot.results.urls.forEach((url) =>{
-            console.log(url);
-        });
-    }
+    createTestUsers: () => {
+        let username = "HarryHayes";
+        let password = "ass";
 
+        let thick = {
+            name: "thick",
+            tags: ["sabrina"]
+        }
+        let pics = {
+            name: "pics",
+            tags: ["plaza"]
+        }
+        let cats = {
+            name: "cats",
+            tags: ["hours"]
+        }
+
+        for (let i = 0; i < 1000; i++) {
+            User.register({username:username + i.toString()}, password, (err, createdUser) => {
+                if(err){
+                    console.log(err);
+                } else {
+                    Subreddit.create(thick, (err, createdSub) =>{
+                        if(err){
+                            console.log(err);
+                        } else {
+                            createdUser.subreddits.push(createdSub);
+                            createdUser.save((err, savedUser) =>{
+                                if(err){
+                                    console.log(err);
+                                } else {
+                                }
+                            });
+                        }
+                    });
+
+                    Subreddit.create(pics, (err, createdSub) =>{
+                        if(err){
+                            console.log(err);
+                        } else {
+                            createdUser.subreddits.push(createdSub);
+                            createdUser.save((err, savedUser) =>{
+                                if(err){
+                                    console.log(err);
+                                } else {
+                                }
+                            });
+                        }
+                    });
+
+                    Subreddit.create(cats, (err, createdSub) =>{
+                        if(err){
+                            console.log(err);
+                        } else {
+                            createdUser.subreddits.push(createdSub);
+                            createdUser.save((err, savedUser) =>{
+                                if(err){
+                                    console.log(err);
+                                } else {
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
 }
 
 module.exports = bot;

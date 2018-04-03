@@ -47,10 +47,9 @@ app.use(indexRoutes);
 app.use("/userControlPanel", userRoutes);
 
 
-setInterval(()=>{
-    Bot.search();
-}, 10000);
-
+// setInterval(()=>{
+//     Bot.search();
+// }, 10000);
 
 
 const server = app.listen(27017, ()=> {
