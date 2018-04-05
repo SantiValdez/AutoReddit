@@ -26,6 +26,8 @@ function isValid(sub, post, tag){
     return false;
 }
 
+let saved = false; //prevents weird issue of mongoose calling the save function after everything else causing multiple saves, idk...
+
 let bot = {
 
     search: () =>{
@@ -36,8 +38,10 @@ let bot = {
             } else {
                 //current user
                 foundUsers.forEach((user) =>{
+                    saved = false;
                     // loop through current user subreddits
                     user.subreddits.forEach((sub) =>{
+                        saved = false;
                         //get and loop through sub's frontpage
                         r.getSubreddit(sub.name).getHot().then((posts) => {
                             posts.forEach((post) =>{
@@ -48,15 +52,18 @@ let bot = {
                                         let newPost = {
                                             title: post.title,
                                             url: "https://www.reddit.com" + post.permalink.toString()
-                                        };
+                                        }
                                         sub.posts.push(newPost);
-                                        sub.save((err, savedSub) =>{
-                                            if(err){
-                                                console.log(err);
-                                            } else {
-                                                console.log(savedSub.posts.length);
-                                            }
-                                        });
+                                        if(!saved){
+                                            sub.save((err, savedSub) =>{
+                                                if(err){
+                                                    console.log(err);
+                                                } else {
+                                                    console.log(savedSub.posts.length);
+                                                }
+                                            });
+                                            saved = true;
+                                        }
                                     } else {
                                         console.log(isValid(sub, post, tag));
                                     }
@@ -102,6 +109,14 @@ let bot = {
                 }
             });
         }
+    },
+
+    asd: ()=>{
+        r.getSubreddit("Askreddit").getHot().then(posts =>{
+            posts.forEach(post =>{
+                console.log(post);
+            });
+        });
     }
 }
 
