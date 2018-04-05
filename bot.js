@@ -26,7 +26,6 @@ function isValid(sub, post, tag){
     return false;
 }
 
-let saved = false; //prevents weird issue of mongoose calling the save function after everything else causing multiple saves, idk...
 
 let bot = {
 
@@ -38,10 +37,8 @@ let bot = {
             } else {
                 //current user
                 foundUsers.forEach((user) =>{
-                    saved = false;
                     // loop through current user subreddits
                     user.subreddits.forEach((sub) =>{
-                        saved = false;
                         //get and loop through sub's frontpage
                         r.getSubreddit(sub.name).getHot().then((posts) => {
                             posts.forEach((post) =>{
@@ -54,20 +51,18 @@ let bot = {
                                             url: "https://www.reddit.com" + post.permalink.toString()
                                         }
                                         sub.posts.push(newPost);
-                                        if(!saved){
-                                            sub.save((err, savedSub) =>{
-                                                if(err){
-                                                    console.log(err);
-                                                } else {
-                                                    console.log(savedSub.posts.length);
-                                                }
-                                            });
-                                            saved = true;
-                                        }
                                     } else {
                                         console.log(isValid(sub, post, tag));
                                     }
                                 });
+                            });
+                        }).then(() => {
+                            sub.save((err, savedSub) =>{
+                                if(err){
+                                    console.log(err);
+                                } else {
+                                    console.log(savedSub.posts.length);
+                                }
                             });
                         });
                     // end subreddit loop
@@ -83,17 +78,21 @@ let bot = {
         let username = "HarryHayes";
         let password = "ass";
 
-        let thick = {
-            name: "thick",
-            tags: ["sabrina"]
+        let fantasy = {
+            name: "fantasy",
+            tags: ["books"]
+        }
+        let pics = {
+            name: "pics",
+            tags: ["this"]
         }
 
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < 100; i++) {
             User.register({username:username + i.toString()}, password, (err, createdUser) => {
                 if(err){
                     console.log(err);
                 } else {
-                    Subreddit.create(thick, (err, createdSub) =>{
+                    Subreddit.create(fantasy, (err, createdSub) =>{
                         if(err){
                             console.log(err);
                         } else {
@@ -102,6 +101,22 @@ let bot = {
                                 if(err){
                                     console.log(err);
                                 } else {
+                                    Subreddit.create(pics, (err, savedSub) =>{
+                                        if(err){
+                                            console.log(err);
+                                        } else {
+                                            savedUser.subreddits.push(savedSub);
+                                            savedUser.save(err, savedUser =>{
+                                                if(err){
+                                                    console.log(err);
+                                                } else {
+                                                    if(i === 99){
+                                                        console.log("FINISHED");
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             });
                         }
