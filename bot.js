@@ -45,7 +45,7 @@ let bot = {
                                 //look at 'tags' for current sub, save urls (permalink, url is the direct submission url) that match with parent sub
                                 sub.tags.forEach((tag) =>{
                                     if(isValid(sub, post, tag)){
-                                        console.log("problem here????");
+                                        console.log("isValid block");
                                         let newPost = {
                                             title: post.title,
                                             url: "https://www.reddit.com" + post.permalink.toString()
@@ -69,30 +69,31 @@ let bot = {
                     });
                 //end current user move to next
                 });
+                console.log("FINISHED SEARCH");
             //finish all users
             } 
         });     
     },
 
     createTestUsers: () => {
-        let username = "HarryHayes";
+        let username = "test";
         let password = "ass";
 
-        let fantasy = {
-            name: "fantasy",
-            tags: ["books"]
+        let thick = {
+            name: "thick",
+            tags: ["thick"]
         }
-        let pics = {
-            name: "pics",
-            tags: ["this"]
+        let ass = {
+            name: "ass",
+            tags: ["ass"]
         }
 
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 1000; i++) {
             User.register({username:username + i.toString()}, password, (err, createdUser) => {
                 if(err){
                     console.log(err);
                 } else {
-                    Subreddit.create(fantasy, (err, createdSub) =>{
+                    Subreddit.create(thick, (err, createdSub) =>{
                         if(err){
                             console.log(err);
                         } else {
@@ -101,7 +102,7 @@ let bot = {
                                 if(err){
                                     console.log(err);
                                 } else {
-                                    Subreddit.create(pics, (err, savedSub) =>{
+                                    Subreddit.create(ass, (err, savedSub) =>{
                                         if(err){
                                             console.log(err);
                                         } else {
@@ -110,7 +111,7 @@ let bot = {
                                                 if(err){
                                                     console.log(err);
                                                 } else {
-                                                    if(i === 99){
+                                                    if(i === 999){
                                                         console.log("FINISHED");
                                                     }
                                                 }

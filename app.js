@@ -51,7 +51,8 @@ app.use("/userControlPanel", userRoutes);
 //     Bot.search();
 // }, 10000);
 
-
+// Bot.search();
+// Bot.createTestUsers();
 const server = app.listen(27017, ()=> {
     console.log("----------SERVER UP----------");
 });
