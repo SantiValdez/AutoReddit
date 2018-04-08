@@ -1,6 +1,58 @@
-h1, h2{
-    color: red;
+body{
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F6F9;
+    color: #4A4A4A;
+}
+a{
+    text-decoration: none !important;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+}
+footer > p{
+    text-decoration: none;
+    color: #b5b5b5;
+}
+.navbar-default{
+    margin: 0;
+    padding: 0;
+    background-color: #3A3A3A;
+    border: 0;
+    border-radius: 0;
+}
+.navbar-default .navbar-brand{
+    font-size: 2em;
+    color: #F0F6F9;
+} 
+.navbar-default .navbar-nav > li > a {
+    color: #b5b5b5;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #F0F6F9;
+} 
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #F0F6F9;
+}
+#title-container{
+    margin-top: 120px;
     text-align: center;
+}
+#title{
+    font-size: 5em;
+}
+#subtitle{
+    font-weight: lighter;
+    color: #686868;
 }
 form{
     margin: 0 35% 0 35%; 
@@ -8,12 +60,4 @@ form{
 
 button{
     border: none;
-}
-
-#signup > div > label{
-    font-size: 2em; 
-}
-
-#trackedSubs{
-    float: left;
 }
