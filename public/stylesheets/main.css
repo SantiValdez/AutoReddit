@@ -21,27 +21,105 @@ footer > p{
     text-decoration: none;
     color: #b5b5b5;
 }
+h2{
+    font-size: 2em;
+    opacity: 0.5;
+}
+h4{
+    text-align: center;
+}
+form{
+    margin: 0 35% 0 35%; 
+}
+
+button{
+    border: none;
+}
 .navbar-default{
     margin: 0;
     padding: 0;
-    background-color: #3A3A3A;
-    border: 0;
+    /* background-color: #3A3A3A; */
+    background-color: #FaFaFa;
+    border-bottom: 0;
     border-radius: 0;
 }
 .navbar-default .navbar-brand{
-    font-size: 2em;
-    color: #F0F6F9;
+    font-size: 1.5em;
+    /* color: #F0F6F9; */
+    color: #3A3A3A;
 } 
 .navbar-default .navbar-nav > li > a {
-    color: #b5b5b5;
+    /* color: #b5b5b5; */
+    color: #3A3A3A;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-    color: #F0F6F9;
+    /* color: #F0F6F9; */
+    color: #4A4A4A;
 } 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
+    /* color: #F0F6F9; */
+    color: #3A3A3A;
+}
+.wrapper{
+    padding: 20px;
+    display: flex;
+    flex-flow: column wrap;
+}
+.viewContent{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 2% 10% 0 10%;
+}
+#trackedSubs{
+    flex: 1;
+    border-right: 1px solid rgba(0,0,0,1);
+    background-color: #fafafa;
+    padding: 0 5% 0 5%;
+}
+#trackedSubs > h4{
+    text-align: center;
+    font-size: 2em;
+}
+#addSub{
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+    min-height: 400px;
+    padding-top: 5%;
+    background-color: #fafafa;
+}
+#postsContainer{
+    flex: 1;
+    border-right: 1px solid rgba(0,0,0,1);
+    background-color: #fafafa;
+    padding: 0 5% 0 5%;
+}
+#postsContainer > h4{
+    text-align: center;
+    font-size: 2em;
+}
+#tagsContainer{
+    flex: 1;
+    min-height: 400px;
+    background-color: #fafafa;
+    padding: 0 5% 0 5%;
+}
+#tagsContainer > h4{
+    text-align: center;
+    font-size: 2em;
+}
+.tag{
+    margin-left: 25%;
+}
+#tagEdit{
+    text-decoration: none;
     color: #F0F6F9;
+}
+#tagEditBtn{
+    float: right;
 }
 #title-container{
     margin-top: 120px;
@@ -54,10 +132,9 @@ footer > p{
     font-weight: lighter;
     color: #686868;
 }
-form{
-    margin: 0 35% 0 35%; 
+#login{
+    margin-top: 5%;
 }
-
-button{
-    border: none;
+#signup{
+    margin-top: 5%;
 }

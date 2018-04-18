@@ -1,21 +1,35 @@
 <% include partials/header %>
 
-<h1>/r/<%= subreddit.name %> details</h1>
+<div class="wrapper">
+    <h2>/r/<%= subreddit.name %> details</h2>
 
-<div>
-    <h2>Posts</h2>
-    <% subreddit.posts.forEach(post =>{ %>
-        <a href="<%= post.url %>"><%= post.title %></a>
-    <% }) %>
+    <div class="viewContent">
+        <div id="postsContainer">
+            <h4>Posts</h4>
+            <% subreddit.posts.forEach(post =>{ %>
+                <div>
+                    <a class="post" href="<%= post.url %>"><%= post.title %></a>
+                </div>
+            <% }) %>
+        </div>
+
+        <div id="tagsContainer">
+            <h4>Tags</h4>
+            <% subreddit.tags.forEach(tag => { %>
+                <div class="tag">
+                    <p><%= tag %></p>
+                </div>
+            <% }) %>
+            <button id="tagEditBtn" class="btn btn-warning btn-sm">
+                <a id="tagEdit" href="/userControlPanel/<%= subreddit._id %>/tags">Edit tags</a>
+            </button>
+        </div>
+
+        <!--<form action="/userControlPanel/:subreddit._id?_method=DELETE" method="POST">
+            <input type="hidden" name="subreddit" value="<%= subreddit._id %>">
+            <input type="submit" class="btn btn-danger" value="Delete this sub">
+        </form>-->
+    </div>
 </div>
-
-<div>
-    <a href="/userControlPanel/<%= subreddit._id %>/tags">Tags</a>
-</div>
-
-<form action="/userControlPanel/:subreddit._id?_method=DELETE" method="POST">
-    <input type="hidden" name="subreddit" value="<%= subreddit._id %>">
-    <input type="submit" class="btn btn-danger" value="Delete this sub">
-</form>
 
 <% include partials/footer %>
